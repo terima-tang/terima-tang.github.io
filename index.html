@@ -1,843 +1,1005 @@
-```html
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>YOUR_NAME | Personal Portfolio</title>
-    <meta name="description" content="YOUR_NAME 的个人主页、作品集与技术经历">
+    <title>Alex Rivers | Full-Stack & AI Engineer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#0a0d14',
+                            card: 'rgba(18, 24, 38, 0.7)',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            accent: '#7c3aed',
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                            emerald: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { opacity: '0.4', filter: 'blur(20px)' },
+                            '100%': { opacity: '0.8', filter: 'blur(30px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for Web Audio Synthesizer sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <style>
-        :root {
-            --bg: #f7f8fa;
-            --card: #ffffff;
-            --text: #171717;
-            --muted: #6b7280;
-            --border: #e5e7eb;
-            --primary: #111827;
-            --accent: #2563eb;
-            --accent-light: #eff6ff;
+        /* Custom scrollbar design */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.6);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Glassmorphism styling helpers */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                "PingFang SC",
-                "Microsoft YaHei",
-                sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .container {
-            width: min(1100px, 90%);
-            margin: auto;
-        }
-
-        /* Navigation */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(247, 248, 250, 0.88);
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(229, 231, 235, 0.7);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(124, 58, 237, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px -5px rgba(124, 58, 237, 0.15);
         }
 
-        .nav-inner {
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Gradient text utilities */
+        .text-gradient-purple {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+        /* Custom glow effects */
+        .glow-purple {
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.4);
+        }
+        
+        /* Grid heat map styling */
+        .heatmap-cell {
+            transition: transform 0.15s ease, background-color 0.2s ease;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.3);
+            z-index: 10;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-            font-size: 14px;
-            color: var(--muted);
+        /* Typing cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
         }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        /* Hero */
-        .hero {
-            min-height: 82vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-content {
-            max-width: 780px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 6px 12px;
-            background: var(--accent-light);
-            color: var(--accent);
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 22px;
-        }
-
-        .hero h1 {
-            font-size: clamp(44px, 7vw, 78px);
-            line-height: 1.05;
-            letter-spacing: -3px;
-            margin-bottom: 25px;
-        }
-
-        .hero h1 span {
-            color: var(--accent);
-        }
-
-        .hero-description {
-            max-width: 680px;
-            font-size: 20px;
-            color: var(--muted);
-            margin-bottom: 32px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 11px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Sections */
-        section {
-            padding: 100px 0;
-        }
-
-        .section-header {
-            margin-bottom: 45px;
-        }
-
-        .section-label {
-            color: var(--accent);
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
-
-        .section-title {
-            font-size: 36px;
-            letter-spacing: -1px;
-        }
-
-        .section-description {
-            color: var(--muted);
-            margin-top: 10px;
-            max-width: 650px;
-        }
-
-        /* About */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 70px;
-        }
-
-        .about-text p {
-            margin-bottom: 18px;
-            color: #4b5563;
-        }
-
-        .info-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .info-item {
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 3px;
-        }
-
-        .info-value {
-            font-weight: 600;
-        }
-
-        /* Projects */
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        .project-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 28px;
-            transition: 0.25s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
-        }
-
-        .project-number {
-            font-size: 13px;
-            color: var(--accent);
-            font-weight: 700;
-            margin-bottom: 18px;
-        }
-
-        .project-card h3 {
-            font-size: 21px;
-            margin-bottom: 10px;
-        }
-
-        .project-card p {
-            color: var(--muted);
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-            margin-bottom: 20px;
-        }
-
-        .tech {
-            background: #f3f4f6;
-            padding: 4px 9px;
-            border-radius: 5px;
-            font-size: 12px;
-            color: #4b5563;
-        }
-
-        .project-link {
-            color: var(--accent);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* Skills */
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .skill {
-            background: white;
-            border: 1px solid var(--border);
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        /* Timeline */
-        .timeline {
-            border-left: 2px solid var(--border);
-            padding-left: 30px;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-            width: 9px;
-            height: 9px;
-            background: var(--accent);
-            border-radius: 50%;
-            left: -36px;
-            top: 8px;
-        }
-
-        .timeline-date {
-            color: var(--accent);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .timeline-item h3 {
-            margin: 5px 0;
-            font-size: 19px;
-        }
-
-        .timeline-item p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        /* Contact */
-        .contact-box {
-            background: var(--primary);
-            color: white;
-            border-radius: 16px;
-            padding: 55px;
-            text-align: center;
-        }
-
-        .contact-box h2 {
-            font-size: 34px;
-            margin-bottom: 12px;
-        }
-
-        .contact-box p {
-            color: #9ca3af;
-            margin-bottom: 28px;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .contact-link {
-            padding: 9px 16px;
-            border: 1px solid #374151;
-            border-radius: 7px;
-            font-size: 14px;
-        }
-
-        .contact-link:hover {
-            background: #1f2937;
-        }
-
-        /* Footer */
-        footer {
-            padding: 35px 0;
-            color: var(--muted);
-            font-size: 13px;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 760px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero {
-                min-height: 75vh;
-            }
-
-            .hero h1 {
-                letter-spacing: -2px;
-            }
-
-            .hero-description {
-                font-size: 17px;
-            }
-
-            section {
-                padding: 70px 0;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .projects {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-box {
-                padding: 35px 20px;
-            }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
+<body class="bg-[#0a0d14] text-slate-200 font-sans antialiased min-h-screen selection:bg-purple-500 selection:text-white relative overflow-x-hidden">
 
-<body>
-
-<!-- Navigation -->
-<nav>
-    <div class="container nav-inner">
-        <a href="#" class="logo">YOUR_NAME</a>
-
-        <ul class="nav-links">
-            <li><a href="#about">关于我</a></li>
-            <li><a href="#projects">作品</a></li>
-            <li><a href="#skills">技能</a></li>
-            <li><a href="#experience">经历</a></li>
-            <li><a href="#contact">联系</a></li>
-        </ul>
+    <!-- Background Dynamic Ambient Lights -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-pink-600/15 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 4s;"></div>
     </div>
-</nav>
 
-
-<!-- Hero -->
-<header class="hero">
-    <div class="container">
-        <div class="hero-content">
-
-            <div class="tag">
-                ICT · Software · Product
-            </div>
-
-            <h1>
-                Hi, I'm<br>
-                <span>YOUR_NAME.</span>
-            </h1>
-
-            <p class="hero-description">
-                我是一名 ICT / Software 方向的研究生，
-                对软件开发、人工智能、互联网产品以及数字技术充满兴趣。
-                这里记录我的项目、学习经历与个人作品。
-            </p>
-
-            <div class="buttons">
-                <a class="btn btn-primary" href="#projects">
-                    查看我的作品
+    <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-[#0a0d14]/70 border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Brand -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 p-[1px] transition-transform duration-300 group-hover:scale-105">
+                        <div class="w-full h-full bg-[#0a0d14] rounded-[11px] flex items-center justify-center">
+                            <span class="font-mono text-lg font-bold text-gradient-purple">&lt;AR/&gt;</span>
+                        </div>
+                    </div>
+                    <div class="hidden sm:block">
+                        <span class="font-bold text-slate-100 tracking-wide text-sm block">Alex Rivers</span>
+                        <span class="text-xs text-purple-400 font-mono block">@alexrivers.dev</span>
+                    </div>
                 </a>
 
-                <a class="btn" href="https://github.com/YOUR_USERNAME" target="_blank">
-                    GitHub →
-                </a>
+                <!-- Nav Links -->
+                <nav class="hidden md:flex items-center space-x-1 bg-slate-900/60 p-1.5 rounded-full border border-white/5 text-sm font-medium">
+                    <a href="#about" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">About</a>
+                    <a href="#skills" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">Skills</a>
+                    <a href="#projects" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">Projects</a>
+                    <a href="#activity" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">Activity</a>
+                    <a href="#timeline" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">Experience</a>
+                    <a href="#terminal" class="px-4 py-1.5 rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition-all">CLI</a>
+                </nav>
+
+                <!-- Action Controls -->
+                <div class="flex items-center space-x-3">
+                    <!-- Audio Sound Toggle -->
+                    <button id="soundToggleBtn" onclick="toggleSound()" class="p-2.5 rounded-xl glass-card text-slate-400 hover:text-purple-400 transition-colors relative group" title="Toggle Sound FX">
+                        <i id="soundIcon" class="fa-solid fa-volume-xmark"></i>
+                        <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">SFX Off</span>
+                    </button>
+
+                    <!-- Contact CTA -->
+                    <a href="#contact" class="hidden sm:inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium text-sm shadow-lg shadow-purple-600/20 transition-all hover:scale-105">
+                        <i class="fa-regular fa-paper-plane text-xs"></i>
+                        <span>Contact Me</span>
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
-
-        </div>
-    </div>
-</header>
-
-
-<!-- About -->
-<section id="about">
-    <div class="container">
-
-        <div class="section-header">
-            <div class="section-label">About</div>
-            <h2 class="section-title">关于我</h2>
-            <p class="section-description">
-                技术背景、教育经历以及我正在关注的方向。
-            </p>
         </div>
 
-        <div class="about-grid">
+        <!-- Mobile Nav Menu Panel -->
+        <div id="mobileMenu" class="hidden md:hidden border-b border-white/10 bg-[#0a0d14]/95 px-4 pt-2 pb-4 space-y-2">
+            <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">About</a>
+            <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Skills</a>
+            <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Projects</a>
+            <a href="#activity" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Activity</a>
+            <a href="#timeline" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Experience</a>
+            <a href="#terminal" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">CLI Terminal</a>
+            <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-purple-400 hover:bg-white/5">Contact Me</a>
+        </div>
+    </header>
 
-            <div class="about-text">
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24 space-y-24 relative z-10">
 
-                <p>
-                    我本科就读于电子信息相关专业，目前正在
-                    University of Padua 攻读 ICT 相关硕士。
-                </p>
+        <section id="about" class="pt-6 lg:pt-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Hero Left / Bio Info -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full glass-panel border-purple-500/30 text-purple-300 text-xs font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 -ml-4"></span>
+                        <span>Available for new opportunities & open source</span>
+                    </div>
 
-                <p>
-                    我的技术兴趣主要集中在 Web Development、
-                    Artificial Intelligence、Multimedia 和 Internet Technology。
-                </p>
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-slate-100">
+                        Hey, I'm <span class="text-gradient-purple">Alex Rivers</span>
+                    </h1>
 
-                <p>
-                    我喜欢通过实际项目学习技术，而不仅仅停留在理论层面。
-                    这个网站也是我记录项目、实验和学习成果的地方。
-                </p>
+                    <div class="text-xl sm:text-2xl font-mono text-slate-300 h-10 flex items-center">
+                        <span class="text-cyan-400 mr-2">&gt;</span>
+                        <span id="typing-text" class="typing-cursor text-slate-200 font-semibold"></span>
+                    </div>
 
-            </div>
+                    <p class="text-slate-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Full-Stack Software Architect & AI Systems Specialist with over 6 years of experience engineering high-performance web applications, distributed microservices, and neural-network integrations. Passionate about developer tooling and open-source ecosystems.
+                    </p>
 
-            <div class="info-list">
+                    <!-- Quick Bio Metrics Badges -->
+                    <div class="grid grid-cols-3 gap-3 pt-2 max-w-lg">
+                        <div class="glass-card p-3 rounded-2xl text-center border-white/5">
+                            <span class="block font-mono text-2xl font-bold text-purple-400">6+</span>
+                            <span class="text-xs text-slate-400 uppercase tracking-wider">Years Exp.</span>
+                        </div>
+                        <div class="glass-card p-3 rounded-2xl text-center border-white/5">
+                            <span class="block font-mono text-2xl font-bold text-cyan-400">42+</span>
+                            <span class="text-xs text-slate-400 uppercase tracking-wider">Repos Built</span>
+                        </div>
+                        <div class="glass-card p-3 rounded-2xl text-center border-white/5">
+                            <span class="block font-mono text-2xl font-bold text-pink-400">1.8k+</span>
+                            <span class="text-xs text-slate-400 uppercase tracking-wider">Stars Earned</span>
+                        </div>
+                    </div>
 
-                <div class="info-item">
-                    <div class="info-label">EDUCATION</div>
-                    <div class="info-value">
-                        University of Padua · ICT
+                    <!-- Social Media Link Buttons -->
+                    <div class="flex flex-wrap items-center gap-3 pt-4">
+                        <a href="https://github.com" target="_blank" class="px-4 py-2.5 rounded-xl glass-card flex items-center space-x-2 text-sm text-slate-200 hover:text-white hover:border-purple-500/50 transition-all hover:-translate-y-1">
+                            <i class="fa-brands fa-github text-lg"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="px-4 py-2.5 rounded-xl glass-card flex items-center space-x-2 text-sm text-slate-200 hover:text-white hover:border-cyan-500/50 transition-all hover:-translate-y-1">
+                            <i class="fa-brands fa-linkedin text-lg text-cyan-400"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://x.com" target="_blank" class="px-4 py-2.5 rounded-xl glass-card flex items-center space-x-2 text-sm text-slate-200 hover:text-white hover:border-pink-500/50 transition-all hover:-translate-y-1">
+                            <i class="fa-brands fa-x-twitter text-lg"></i>
+                            <span>Twitter/X</span>
+                        </a>
+                        <button onclick="copyToClipboard('alex.rivers@devmail.org', 'Email address copied!')" class="px-4 py-2.5 rounded-xl glass-card flex items-center space-x-2 text-sm text-slate-200 hover:text-white hover:border-emerald-500/50 transition-all hover:-translate-y-1">
+                            <i class="fa-regular fa-copy text-lg text-emerald-400"></i>
+                            <span>Copy Email</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="info-item">
-                    <div class="info-label">LOCATION</div>
-                    <div class="info-value">
-                        Padua, Italy
+                <!-- Hero Right / Visual Profile Card -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Neon Glow Ring background -->
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-500 opacity-50 blur-xl animate-pulse-slow"></div>
+                        
+                        <!-- GitHub Profile Card Widget -->
+                        <div class="relative rounded-3xl glass-panel p-6 border border-white/10 space-y-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Alex Rivers Avatar" class="w-20 h-20 rounded-2xl object-cover border-2 border-purple-500/50">
+                                    <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-[#0a0d14] rounded-full" title="Online"></span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white flex items-center gap-1.5">
+                                        Alex Rivers
+                                        <i class="fa-solid fa-circle-check text-xs text-purple-400" title="Verified Creator"></i>
+                                    </h3>
+                                    <p class="text-xs font-mono text-slate-400">@alexrivers • San Francisco, CA</p>
+                                    <span class="inline-block mt-2 text-xs font-medium px-2.5 py-0.5 rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                                        Staff Software Engineer
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Mock Tech Stack Quick Badges -->
+                            <div class="space-y-2">
+                                <div class="text-xs font-mono text-slate-400 uppercase tracking-wider">Current Focus</div>
+                                <div class="flex flex-wrap gap-2 text-xs">
+                                    <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-cyan-300 border border-slate-700">TypeScript</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-purple-300 border border-slate-700">Next.js 14</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-emerald-300 border border-slate-700">Rust</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-pink-300 border border-slate-700">PyTorch</span>
+                                </div>
+                            </div>
+
+                            <!-- Live Status Box -->
+                            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 flex items-center justify-between text-xs font-mono">
+                                <div class="flex items-center space-x-2.5 text-slate-300">
+                                    <i class="fa-brands fa-spotify text-emerald-400 text-sm animate-spin" style="animation-duration: 8s;"></i>
+                                    <div class="truncate max-w-[200px]">
+                                        <span class="text-slate-400 block text-[10px]">LISTENING TO SPOTIFY</span>
+                                        <span class="text-white font-semibold truncate block">Midnight City — M83</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-extrabold text-white">Technical Arsenal</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">Categorized overview of frameworks, languages, cloud platforms, and developer tooling mastered over the years.</p>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex flex-wrap justify-center gap-2 pt-2">
+                <button onclick="filterSkills('all')" class="skill-tab active px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all bg-purple-600 text-white shadow-lg shadow-purple-600/30">All Skills</button>
+                <button onclick="filterSkills('frontend')" class="skill-tab px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700">Frontend</button>
+                <button onclick="filterSkills('backend')" class="skill-tab px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700">Backend</button>
+                <button onclick="filterSkills('devops')" class="skill-tab px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700">DevOps & Cloud</button>
+                <button onclick="filterSkills('ai')" class="skill-tab px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-wider transition-all bg-slate-800/80 text-slate-300 hover:bg-slate-700">AI / ML</button>
+            </div>
+
+            <!-- Tech Grid -->
+            <div id="skillsContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 pt-4">
+                <!-- Skill items rendered dynamically or pre-built with data-category attributes -->
+            </div>
+        </section>
+
+        <section id="projects" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white">Featured Work & Projects</h2>
+                    <p class="text-slate-400 text-sm">Selected open-source projects, SaaS platforms, and experimental tools.</p>
+                </div>
+                
+                <!-- Project Search Bar -->
+                <div class="relative w-full md:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="projectSearch" onkeyup="searchProjects()" placeholder="Search project name or tag..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors">
+                </div>
+            </div>
+
+            <!-- Projects Grid Container -->
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project Card 1 -->
+                <div class="project-card glass-card rounded-2xl p-6 flex flex-col justify-between space-y-4 group" data-tags="react typescript ai nextjs">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                <i class="fa-solid fa-brain text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-3 text-xs font-mono text-slate-400">
+                                <span><i class="fa-regular fa-star text-amber-400 mr-1"></i>840</span>
+                                <span><i class="fa-solid fa-code-fork text-purple-400 mr-1"></i>120</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">NexusAI Engine</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Autonomous LLM multi-agent orchestration framework with real-time vector embeddings and custom RAG pipeline execution.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex flex-wrap gap-1.5 text-[11px] font-mono">
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700">TypeScript</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300 border border-slate-700">Python</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-pink-300 border border-slate-700">Qdrant</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                            <a href="https://github.com" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center space-x-1 font-mono">
+                                <i class="fa-brands fa-github"></i>
+                                <span>Repository</span>
+                            </a>
+                            <a href="#" class="text-xs text-purple-400 hover:text-purple-300 flex items-center space-x-1 font-mono">
+                                <span>Live Demo</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="info-item">
-                    <div class="info-label">INTERESTS</div>
-                    <div class="info-value">
-                        AI · Software · Product
+                <!-- Project Card 2 -->
+                <div class="project-card glass-card rounded-2xl p-6 flex flex-col justify-between space-y-4 group" data-tags="rust devops cli webassembly">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                                <i class="fa-solid fa-bolt text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-3 text-xs font-mono text-slate-400">
+                                <span><i class="fa-regular fa-star text-amber-400 mr-1"></i>512</span>
+                                <span><i class="fa-solid fa-code-fork text-purple-400 mr-1"></i>64</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">HyperPulse CLI</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Ultra-fast asynchronous microservices benchmarking and API latency testing tool built with Rust and WebAssembly.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex flex-wrap gap-1.5 text-[11px] font-mono">
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-orange-300 border border-slate-700">Rust</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700">Tokio</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-purple-300 border border-slate-700">Wasm</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                            <a href="https://github.com" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center space-x-1 font-mono">
+                                <i class="fa-brands fa-github"></i>
+                                <span>Repository</span>
+                            </a>
+                            <a href="#" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center space-x-1 font-mono">
+                                <span>Docs</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="info-item">
-                    <div class="info-label">LANGUAGES</div>
-                    <div class="info-value">
-                        Chinese · English
+                <!-- Project Card 3 -->
+                <div class="project-card glass-card rounded-2xl p-6 flex flex-col justify-between space-y-4 group" data-tags="react dashboard tailwind realtime">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2.5 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                                <i class="fa-solid fa-chart-line text-xl"></i>
+                            </div>
+                            <div class="flex items-center space-x-3 text-xs font-mono text-slate-400">
+                                <span><i class="fa-regular fa-star text-amber-400 mr-1"></i>310</span>
+                                <span><i class="fa-solid fa-code-fork text-purple-400 mr-1"></i>45</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-pink-400 transition-colors">Aether Analytics</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Real-time glassmorphism metrics dashboard for multi-cloud telemetry, logs, and infrastructure health monitoring.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex flex-wrap gap-1.5 text-[11px] font-mono">
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 border border-slate-700">React 18</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-pink-300 border border-slate-700">Tailwind</span>
+                            <span class="px-2 py-0.5 rounded bg-slate-800 text-emerald-300 border border-slate-700">WebSockets</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                            <a href="https://github.com" target="_blank" class="text-xs text-slate-400 hover:text-white flex items-center space-x-1 font-mono">
+                                <i class="fa-brands fa-github"></i>
+                                <span>Repository</span>
+                            </a>
+                            <a href="#" class="text-xs text-pink-400 hover:text-pink-300 flex items-center space-x-1 font-mono">
+                                <span>Live App</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="activity" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white flex items-center gap-2">
+                        <span>GitHub Contribution Heatmap</span>
+                        <i class="fa-brands fa-github text-purple-400 text-2xl"></i>
+                    </h2>
+                    <p class="text-slate-400 text-sm">2,419 contributions in the last year</p>
+                </div>
+                <div class="flex items-center space-x-2 text-xs font-mono text-slate-400">
+                    <span>Less</span>
+                    <span class="w-3 h-3 rounded-sm bg-slate-800 border border-white/5"></span>
+                    <span class="w-3 h-3 rounded-sm bg-purple-900/60"></span>
+                    <span class="w-3 h-3 rounded-sm bg-purple-700"></span>
+                    <span class="w-3 h-3 rounded-sm bg-purple-500"></span>
+                    <span class="w-3 h-3 rounded-sm bg-cyan-400"></span>
+                    <span>More</span>
+                </div>
+            </div>
+
+            <!-- Heatmap Glass Panel Container -->
+            <div class="glass-panel p-6 rounded-2xl space-y-6 border border-white/10 overflow-x-auto">
+                <div id="contributionHeatmap" class="min-w-[700px] grid grid-flow-col grid-rows-7 gap-1.5 justify-between">
+                    <!-- Dynamic heatmap cells generated via JavaScript -->
+                </div>
+
+                <!-- Stats summary footer bar -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5 font-mono text-xs">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-fire text-amber-400 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">CURRENT STREAK</span>
+                            <span class="text-white font-bold text-sm">48 Days</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-code-commit text-purple-400 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">TOTAL COMMITS</span>
+                            <span class="text-white font-bold text-sm">1,894</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-code-pull-request text-cyan-400 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">PULL REQUESTS</span>
+                            <span class="text-white font-bold text-sm">342</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-box text-pink-400 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">CONTRIBUTED TO</span>
+                            <span class="text-white font-bold text-sm">28 Repos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-extrabold text-white">Experience & Roadmap</h2>
+                <p class="text-slate-400 text-sm">Professional trajectory and engineering milestones.</p>
+            </div>
+
+            <div class="relative border-l-2 border-purple-500/20 max-w-3xl mx-auto space-y-8 pl-6 md:pl-8">
+                <!-- Timeline Item 1 -->
+                <div class="relative group">
+                    <!-- Timeline Dot -->
+                    <div class="absolute -left-[31px] md:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-purple-500 border-4 border-[#0a0d14] group-hover:scale-125 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-lg font-bold text-white">Staff Full-Stack Architect</h3>
+                            <span class="px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-300 text-xs font-mono border border-purple-500/20">2023 — Present</span>
+                        </div>
+                        <div class="text-xs text-cyan-400 font-mono">Vortex Scale Labs Inc.</div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Leading the core AI infra team building distributed edge vector databases and real-time LLM inference pipelines. Spearheaded microservice latency optimizations reducing overall tail latency by 42%.
+                        </p>
                     </div>
                 </div>
 
+                <!-- Timeline Item 2 -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] md:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-cyan-500 border-4 border-[#0a0d14] group-hover:scale-125 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-lg font-bold text-white">Senior Frontend Engineer</h3>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-xs font-mono">2021 — 2023</span>
+                        </div>
+                        <div class="text-xs text-cyan-400 font-mono">CloudFlow Cloud Systems</div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Architected web-based interactive data visualization dashboards using React, WebGL, and RxJS. Scaled developer UI component library adopted by 80+ internal engineering teams.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="relative group">
+                    <div class="absolute -left-[31px] md:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-600 border-4 border-[#0a0d14] group-hover:scale-125 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-lg font-bold text-white">B.S. in Computer Science</h3>
+                            <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-xs font-mono">2017 — 2021</span>
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono">University of California, Berkeley</div>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Focused on Distributed Operating Systems, Machine Learning algorithms, and Compiler Design. Graduated with Honors (3.92 GPA).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="terminal" class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-terminal text-purple-400"></i>
+                        <span>Interactive Terminal Shell</span>
+                    </h2>
+                    <p class="text-slate-400 text-xs">Type <code class="text-purple-400 font-mono">help</code> to list available interactive commands.</p>
+                </div>
+                <button onclick="clearTerminal()" class="text-xs font-mono text-slate-400 hover:text-white bg-slate-800/80 px-3 py-1.5 rounded-lg border border-white/5 transition-colors">
+                    Clear Terminal
+                </button>
             </div>
 
-        </div>
-
-    </div>
-</section>
-
-
-<!-- Projects -->
-<section id="projects">
-    <div class="container">
-
-        <div class="section-header">
-            <div class="section-label">Selected Works</div>
-            <h2 class="section-title">我的作品</h2>
-            <p class="section-description">
-                一些我参与开发、学习或正在进行中的项目。
-            </p>
-        </div>
-
-        <div class="projects">
-
-            <!-- Project 01 -->
-            <article class="project-card">
-
-                <div class="project-number">
-                    PROJECT 01
+            <!-- Terminal Screen Window -->
+            <div class="rounded-2xl glass-panel border border-white/10 overflow-hidden font-mono text-xs shadow-2xl">
+                <!-- Terminal Top Bar Header -->
+                <div class="bg-slate-900/90 px-4 py-2.5 border-b border-white/5 flex items-center justify-between select-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                        <span class="text-slate-400 text-[11px] ml-2">alex@rivers-macbook-pro:~</span>
+                    </div>
+                    <span class="text-slate-500 text-[10px]">zsh (utf-8)</span>
                 </div>
 
-                <h3>Database Management System</h3>
-
-                <p>
-                    从零设计并实现一个数据库管理系统 Demo，
-                    用于理解数据库系统的核心结构、SQL 执行以及数据管理机制。
-                </p>
-
-                <div class="tech-stack">
-                    <span class="tech">Java</span>
-                    <span class="tech">SQL</span>
-                    <span class="tech">Database</span>
-                    <span class="tech">Spring</span>
+                <!-- Terminal Console Body -->
+                <div id="terminalBody" class="p-4 h-64 overflow-y-auto space-y-2 text-slate-300">
+                    <div>
+                        <span class="text-emerald-400">Welcome to Alex Rivers CLI v2.4.0</span><br>
+                        <span class="text-slate-500">Type <span class="text-purple-400">help</span> to view available commands.</span>
+                    </div>
                 </div>
 
-                <a class="project-link"
-                   href="https://github.com/YOUR_USERNAME/PROJECT_1"
-                   target="_blank">
-                    View Project →
-                </a>
-
-            </article>
-
-
-            <!-- Project 02 -->
-            <article class="project-card">
-
-                <div class="project-number">
-                    PROJECT 02
+                <!-- Terminal Prompt Input Line -->
+                <div class="p-3 bg-slate-950/60 border-t border-white/5 flex items-center space-x-2">
+                    <span class="text-purple-400 font-bold">alex@rivers-profile:~$</span>
+                    <input type="text" id="terminalInput" onkeydown="handleTerminalCommand(event)" autocomplete="off" spellcheck="false" class="flex-1 bg-transparent border-none outline-none text-slate-100 font-mono text-xs focus:ring-0">
                 </div>
+            </div>
+        </section>
 
-                <h3>AI / Machine Learning Project</h3>
-
-                <p>
-                    一个机器学习实验项目，用于研究监督学习、
-                    神经网络、模型训练以及数据处理流程。
-                </p>
-
-                <div class="tech-stack">
-                    <span class="tech">Python</span>
-                    <span class="tech">PyTorch</span>
-                    <span class="tech">Machine Learning</span>
-                    <span class="tech">AI</span>
-                </div>
-
-                <a class="project-link"
-                   href="https://github.com/YOUR_USERNAME/PROJECT_2"
-                   target="_blank">
-                    View Project →
-                </a>
-
-            </article>
-
-
-            <!-- Project 03 -->
-            <article class="project-card">
-
-                <div class="project-number">
-                    PROJECT 03
-                </div>
-
-                <h3>Web Application</h3>
-
-                <p>
-                    一个完整的 Web Application，
-                    包括前端界面、后端 API、数据库以及用户交互。
-                </p>
-
-                <div class="tech-stack">
-                    <span class="tech">Java</span>
-                    <span class="tech">Spring Boot</span>
-                    <span class="tech">MySQL</span>
-                    <span class="tech">REST API</span>
-                </div>
-
-                <a class="project-link"
-                   href="https://github.com/YOUR_USERNAME/PROJECT_3"
-                   target="_blank">
-                    View Project →
-                </a>
-
-            </article>
-
-
-            <!-- Project 04 -->
-            <article class="project-card">
-
-                <div class="project-number">
-                    PROJECT 04
-                </div>
-
-                <h3>Multimedia Project</h3>
-
-                <p>
-                    与图像、视频、计算机视觉或多媒体数据处理相关的项目。
-                </p>
-
-                <div class="tech-stack">
-                    <span class="tech">Python</span>
-                    <span class="tech">OpenCV</span>
-                    <span class="tech">Computer Vision</span>
-                    <span class="tech">Multimedia</span>
-                </div>
-
-                <a class="project-link"
-                   href="https://github.com/YOUR_USERNAME/PROJECT_4"
-                   target="_blank">
-                    View Project →
-                </a>
-
-            </article>
-
-        </div>
-
-    </div>
-</section>
-
-
-<!-- Skills -->
-<section id="skills">
-    <div class="container">
-
-        <div class="section-header">
-            <div class="section-label">Skills</div>
-            <h2 class="section-title">技术栈</h2>
-        </div>
-
-        <div class="skills">
-
-            <span class="skill">Java</span>
-            <span class="skill">Python</span>
-            <span class="skill">Spring Boot</span>
-            <span class="skill">REST API</span>
-            <span class="skill">MySQL</span>
-            <span class="skill">Git</span>
-            <span class="skill">GitHub</span>
-            <span class="skill">HTML / CSS</span>
-            <span class="skill">JavaScript</span>
-            <span class="skill">Machine Learning</span>
-            <span class="skill">Computer Vision</span>
-            <span class="skill">Multimedia</span>
-        </div>
-
-    </div>
-</section>
-
-
-<!-- Experience -->
-<section id="experience">
-    <div class="container">
-
-        <div class="section-header">
-            <div class="section-label">Background</div>
-            <h2 class="section-title">经历</h2>
-        </div>
-
-        <div class="timeline">
-
-            <div class="timeline-item">
-
-                <div class="timeline-date">
-                    2026 — Present
-                </div>
-
-                <h3>
-                    University of Padua
-                </h3>
-
-                <p>
-                    Master's Degree · ICT / Internet & Multimedia
-                </p>
-
+        <section id="contact" class="space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-extrabold text-white">Get In Touch</h2>
+                <p class="text-slate-400 text-sm max-w-lg mx-auto">Have a project in mind, feedback, or an open position? Let's connect!</p>
             </div>
 
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-5xl mx-auto">
+                <!-- Left: Contact Quick Cards -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="text-xs text-purple-400 font-mono">DIRECT EMAIL</div>
+                        <div class="font-semibold text-white">alex.rivers@devmail.org</div>
+                        <p class="text-xs text-slate-400">Response time: usually within 24 hours.</p>
+                    </div>
 
-            <div class="timeline-item">
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="text-xs text-cyan-400 font-mono">DISCORD COMMUNITY</div>
+                        <div class="font-semibold text-white">@alexrivers#0001</div>
+                        <p class="text-xs text-slate-400">Join my open-source Discord server.</p>
+                    </div>
 
-                <div class="timeline-date">
-                    2021 — 2025
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <div class="text-xs text-pink-400 font-mono">LOCATION</div>
+                        <div class="font-semibold text-white">San Francisco, CA (PST)</div>
+                        <p class="text-xs text-slate-400">Open for remote worldwide opportunities.</p>
+                    </div>
                 </div>
 
-                <h3>
-                    Software / Web Development
-                </h3>
+                <!-- Right: Interactive Message Form -->
+                <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-white/10">
+                    <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase tracking-wider mb-1">Your Name</label>
+                            <input type="text" required placeholder="e.g. Sarah Connor" class="w-full bg-slate-900/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors">
+                        </div>
 
-                <p>
-                    Java Web、后端开发、数据库以及互联网相关项目经验。
-                </p>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase tracking-wider mb-1">Email Address</label>
+                            <input type="email" required placeholder="e.g. sarah@cyberdyne.com" class="w-full bg-slate-900/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors">
+                        </div>
 
-            </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase tracking-wider mb-1">Message</label>
+                            <textarea rows="4" required placeholder="Tell me about your project or inquiry..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl p-4 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"></textarea>
+                        </div>
 
-
-            <div class="timeline-item">
-
-                <div class="timeline-date">
-                    2015 — 2019
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/20 active:scale-95">
+                            Send Message
+                        </button>
+                    </form>
+                    <div id="formStatus" class="hidden mt-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs text-center font-mono"></div>
                 </div>
-
-                <h3>
-                    Shandong University
-                </h3>
-
-                <p>
-                    Electronic Information Science and Technology
-                </p>
-
             </div>
+        </section>
 
-        </div>
+    </main>
 
-    </div>
-</section>
-
-
-<!-- Contact -->
-<section id="contact">
-    <div class="container">
-
-        <div class="contact-box">
-
-            <h2>Let's connect.</h2>
-
-            <p>
-                如果你对我的项目、技术方向或者合作感兴趣，欢迎联系我。
-            </p>
-
-            <div class="contact-links">
-
-                <a class="contact-link"
-                   href="https://github.com/YOUR_USERNAME"
-                   target="_blank">
-                    GitHub
-                </a>
-
-                <a class="contact-link"
-                   href="mailto:YOUR_EMAIL@example.com">
-                    Email
-                </a>
-
-                <a class="contact-link"
-                   href="https://www.linkedin.com/in/YOUR_USERNAME/"
-                   target="_blank">
-                    LinkedIn
-                </a>
-
+    <footer class="border-t border-white/10 bg-[#0a0d14] relative z-10 py-8 text-xs text-slate-500 font-mono">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                © 2026 Alex Rivers. Built with HTML, Tailwind & Vanilla JS.
             </div>
-
+            <div class="flex items-center space-x-4">
+                <a href="#about" class="hover:text-purple-400 transition-colors">Back to top ↑</a>
+            </div>
         </div>
+    </footer>
 
-    </div>
-</section>
+    <script>
+        // -------------------------------------------------------------
+        // Audio Synth sound effect configuration using Web Audio Tone.js
+        // -------------------------------------------------------------
+        let soundEnabled = false;
+        let synth;
 
+        function initSynth() {
+            if (!synth && typeof Tone !== 'undefined') {
+                synth = new Tone.Synth({
+                    oscillator: { type: 'sine' },
+                    envelope: { attack: 0.005, decay: 0.1, sustain: 0, release: 0.1 }
+                }).toDestination();
+                synth.volume.value = -12;
+            }
+        }
 
-<footer>
-    © 2026 YOUR_NAME. Built with HTML & CSS.
-</footer>
+        function playSound(note = "C5") {
+            if (soundEnabled) {
+                try {
+                    initSynth();
+                    Tone.start();
+                    synth.triggerAttackRelease(note, "8n");
+                } catch(e) {
+                    console.log("Audio play suppressed", e);
+                }
+            }
+        }
 
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const btn = document.getElementById('soundToggleBtn');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-purple-400';
+                initSynth();
+                playSound("G5");
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+            }
+        }
 
-<script>
-    // 简单的滚动淡入效果
-    const items = document.querySelectorAll(
-        ".project-card, .timeline-item, .about-grid"
-    );
+        // -------------------------------------------------------------
+        // Typing Bio Effect
+        // -------------------------------------------------------------
+        const typingPhrases = [
+            "Building high-scale distributed systems.",
+            "Architecting modern web applications.",
+            "Exploring AI & autonomous agents.",
+            "Open source enthusiast & technical writer."
+        ];
+        let phraseIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('typing-text');
 
-    const observer = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
+        function typeLoop() {
+            const currentPhrase = typingPhrases[phraseIdx];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentPhrase.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                typingElement.textContent = currentPhrase.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let typeSpeed = isDeleting ? 30 : 60;
+
+            if (!isDeleting && charIdx === currentPhrase.length) {
+                typeSpeed = 2000; // Pause at full phrase
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                phraseIdx = (phraseIdx + 1) % typingPhrases.length;
+                typeSpeed = 400;
+            }
+
+            setTimeout(typeLoop, typeSpeed);
+        }
+
+        // -------------------------------------------------------------
+        // Skill Data & Dynamic Renderer
+        // -------------------------------------------------------------
+        const skillList = [
+            { name: 'TypeScript', icon: 'fa-brands fa-js', cat: 'frontend', color: 'text-amber-400' },
+            { name: 'React 18', icon: 'fa-brands fa-react', cat: 'frontend', color: 'text-cyan-400' },
+            { name: 'Next.js 14', icon: 'fa-solid fa-N', cat: 'frontend', color: 'text-white' },
+            { name: 'Tailwind CSS', icon: 'fa-solid fa-code', cat: 'frontend', color: 'text-cyan-300' },
+            { name: 'Node.js', icon: 'fa-brands fa-node-js', cat: 'backend', color: 'text-emerald-400' },
+            { name: 'Python', icon: 'fa-brands fa-python', cat: 'backend', color: 'text-blue-400' },
+            { name: 'Rust', icon: 'fa-solid fa-gear', cat: 'backend', color: 'text-orange-400' },
+            { name: 'PostgreSQL', icon: 'fa-solid fa-database', cat: 'backend', color: 'text-blue-300' },
+            { name: 'Docker', icon: 'fa-brands fa-docker', cat: 'devops', color: 'text-cyan-400' },
+            { name: 'Kubernetes', icon: 'fa-solid fa-dharmachakra', cat: 'devops', color: 'text-blue-500' },
+            { name: 'AWS Cloud', icon: 'fa-brands fa-aws', cat: 'devops', color: 'text-amber-500' },
+            { name: 'PyTorch / AI', icon: 'fa-solid fa-microchip', cat: 'ai', color: 'text-pink-400' },
+        ];
+
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = skillList.map(skill => `
+                <div class="skill-card glass-card p-4 rounded-xl flex items-center space-x-3 hover:border-purple-500/40 transition-all cursor-default" data-cat="${skill.cat}">
+                    <i class="${skill.icon} text-2xl ${skill.color}"></i>
+                    <div>
+                        <span class="block text-xs font-bold text-white">${skill.name}</span>
+                        <span class="block text-[10px] text-slate-400 capitalize">${skill.cat}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterSkills(category) {
+            playSound("E5");
+            const tabs = document.querySelectorAll('.skill-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-purple-600', 'text-white', 'shadow-lg');
+                tab.classList.add('bg-slate-800/80', 'text-slate-300');
+            });
+
+            event.target.classList.remove('bg-slate-800/80', 'text-slate-300');
+            event.target.classList.add('bg-purple-600', 'text-white', 'shadow-lg');
+
+            const cards = document.querySelectorAll('.skill-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.cat === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
                 }
             });
-        },
-        { threshold: 0.1 }
-    );
+        }
 
-    items.forEach(item => {
-        item.style.opacity = "0";
-        item.style.transform = "translateY(20px)";
-        item.style.transition = "opacity .6s ease, transform .6s ease";
-        observer.observe(item);
-    });
-</script>
+        // -------------------------------------------------------------
+        // Projects Search
+        // -------------------------------------------------------------
+        function searchProjects() {
+            const query = document.getElementById('projectSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                const tags = card.dataset.tags || '';
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query) || tags.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
+        // -------------------------------------------------------------
+        // GitHub Contribution Heatmap Simulator Generator
+        // -------------------------------------------------------------
+        function generateContributionHeatmap() {
+            const container = document.getElementById('contributionHeatmap');
+            if (!container) return;
+
+            const totalCells = 52 * 7; // 52 weeks
+            let html = '';
+
+            for (let i = 0; i < totalCells; i++) {
+                // Generate realistic weighted randomized contribution levels
+                const rand = Math.random();
+                let colorClass = 'bg-slate-900 border border-white/5';
+                let count = 0;
+
+                if (rand > 0.85) {
+                    colorClass = 'bg-cyan-400 glow-purple';
+                    count = Math.floor(Math.random() * 8) + 12;
+                } else if (rand > 0.65) {
+                    colorClass = 'bg-purple-500';
+                    count = Math.floor(Math.random() * 5) + 6;
+                } else if (rand > 0.45) {
+                    colorClass = 'bg-purple-700';
+                    count = Math.floor(Math.random() * 4) + 2;
+                } else if (rand > 0.3) {
+                    colorClass = 'bg-purple-950';
+                    count = 1;
+                }
+
+                html += `<div class="heatmap-cell w-3 h-3 rounded-sm ${colorClass}" title="${count} contributions"></div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // -------------------------------------------------------------
+        // Interactive CLI Terminal Controller
+        // -------------------------------------------------------------
+        function handleTerminalCommand(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('terminalInput');
+                const cmd = input.value.trim().toLowerCase();
+                const terminalBody = document.getElementById('terminalBody');
+
+                playSound("A4");
+
+                // Render executed prompt
+                const promptLine = document.createElement('div');
+                promptLine.innerHTML = `<span class="text-purple-400 font-bold">alex@rivers-profile:~$</span> <span class="text-white">${escapeHtml(cmd)}</span>`;
+                terminalBody.appendChild(promptLine);
+
+                // Command handlers
+                const responseLine = document.createElement('div');
+                responseLine.className = 'text-slate-400 pl-2 border-l border-purple-500/30 my-1';
+
+                switch(cmd) {
+                    case 'help':
+                        responseLine.innerHTML = `
+                            Available commands:<br>
+                            - <span class="text-cyan-400">about</span>: Brief summary about Alex<br>
+                            - <span class="text-cyan-400">skills</span>: List primary tech stack<br>
+                            - <span class="text-cyan-400">projects</span>: Display highlighted repositories<br>
+                            - <span class="text-cyan-400">contact</span>: Show contact details<br>
+                            - <span class="text-cyan-400">clear</span>: Clear terminal window<br>
+                            - <span class="text-cyan-400">date</span>: Show current timestamp
+                        `;
+                        break;
+                    case 'about':
+                        responseLine.textContent = "Alex Rivers — Staff Full-Stack Software Engineer & Open Source Contributor based in San Francisco, CA.";
+                        break;
+                    case 'skills':
+                        responseLine.textContent = "Frontend: TypeScript, React, Next.js | Backend: Node.js, Python, Rust, Postgres | Infra: Docker, Kubernetes, AWS.";
+                        break;
+                    case 'projects':
+                        responseLine.textContent = "NexusAI Engine (AI Framework), HyperPulse CLI (Rust benchmarking), Aether Analytics (Telemetry Dashboard).";
+                        break;
+                    case 'contact':
+                        responseLine.textContent = "Email: alex.rivers@devmail.org | GitHub: github.com/alexrivers | Twitter: @alexrivers";
+                        break;
+                    case 'clear':
+                        clearTerminal();
+                        input.value = '';
+                        return;
+                    case 'date':
+                        responseLine.textContent = new Date().toString();
+                        break;
+                    case '':
+                        responseLine.textContent = '';
+                        break;
+                    default:
+                        responseLine.innerHTML = `<span class="text-red-400">Command not found: "${escapeHtml(cmd)}". Type <span class="text-purple-400">help</span> for commands.</span>`;
+                }
+
+                terminalBody.appendChild(responseLine);
+                input.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        }
+
+        function clearTerminal() {
+            document.getElementById('terminalBody').innerHTML = '<div><span class="text-emerald-400">Terminal cleared.</span></div>';
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // -------------------------------------------------------------
+        // Copy to Clipboard Utility Function
+        // -------------------------------------------------------------
+        function copyToClipboard(text, alertMsg) {
+            playSound("C6");
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Show Toast feedback
+            showToast(alertMsg);
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 glass-panel border border-purple-500/40 text-purple-200 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-mono flex items-center space-x-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i><span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // -------------------------------------------------------------
+        // Form Handler
+        // -------------------------------------------------------------
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            playSound("G5");
+            const status = document.getElementById('formStatus');
+            status.textContent = "Message sent successfully! I will get back to you shortly.";
+            status.classList.remove('hidden');
+            document.getElementById('contactForm').reset();
+            setTimeout(() => status.classList.add('hidden'), 5000);
+        }
+
+        // -------------------------------------------------------------
+        // Mobile Menu Toggle
+        // -------------------------------------------------------------
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Initialize script logic on window load
+        window.onload = function() {
+            typeLoop();
+            renderSkills();
+            generateContributionHeatmap();
+        };
+    </script>
 </body>
 </html>
-```
