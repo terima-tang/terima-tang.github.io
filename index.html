@@ -1,0 +1,843 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>YOUR_NAME | Personal Portfolio</title>
+    <meta name="description" content="YOUR_NAME 的个人主页、作品集与技术经历">
+
+    <style>
+        :root {
+            --bg: #f7f8fa;
+            --card: #ffffff;
+            --text: #171717;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --primary: #111827;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Microsoft YaHei",
+                sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: auto;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(247, 248, 250, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.7);
+        }
+
+        .nav-inner {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 82vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 780px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(44px, 7vw, 78px);
+            line-height: 1.05;
+            letter-spacing: -3px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 680px;
+            font-size: 20px;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            margin-bottom: 45px;
+        }
+
+        .section-label {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            letter-spacing: -1px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            margin-top: 10px;
+            max-width: 650px;
+        }
+
+        /* About */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 70px;
+        }
+
+        .about-text p {
+            margin-bottom: 18px;
+            color: #4b5563;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .info-item {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        /* Projects */
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            transition: 0.25s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
+        }
+
+        .project-number {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .project-card h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 20px;
+        }
+
+        .tech {
+            background: #f3f4f6;
+            padding: 4px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .project-link {
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Skills */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Timeline */
+        .timeline {
+            border-left: 2px solid var(--border);
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            background: var(--accent);
+            border-radius: 50%;
+            left: -36px;
+            top: 8px;
+        }
+
+        .timeline-date {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .timeline-item h3 {
+            margin: 5px 0;
+            font-size: 19px;
+        }
+
+        .timeline-item p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* Contact */
+        .contact-box {
+            background: var(--primary);
+            color: white;
+            border-radius: 16px;
+            padding: 55px;
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .contact-box p {
+            color: #9ca3af;
+            margin-bottom: 28px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            padding: 9px 16px;
+            border: 1px solid #374151;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .contact-link:hover {
+            background: #1f2937;
+        }
+
+        /* Footer */
+        footer {
+            padding: 35px 0;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 760px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                min-height: 75vh;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .hero-description {
+                font-size: 17px;
+            }
+
+            section {
+                padding: 70px 0;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-box {
+                padding: 35px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="container nav-inner">
+        <a href="#" class="logo">YOUR_NAME</a>
+
+        <ul class="nav-links">
+            <li><a href="#about">关于我</a></li>
+            <li><a href="#projects">作品</a></li>
+            <li><a href="#skills">技能</a></li>
+            <li><a href="#experience">经历</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<!-- Hero -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-content">
+
+            <div class="tag">
+                ICT · Software · Product
+            </div>
+
+            <h1>
+                Hi, I'm<br>
+                <span>YOUR_NAME.</span>
+            </h1>
+
+            <p class="hero-description">
+                我是一名 ICT / Software 方向的研究生，
+                对软件开发、人工智能、互联网产品以及数字技术充满兴趣。
+                这里记录我的项目、学习经历与个人作品。
+            </p>
+
+            <div class="buttons">
+                <a class="btn btn-primary" href="#projects">
+                    查看我的作品
+                </a>
+
+                <a class="btn" href="https://github.com/YOUR_USERNAME" target="_blank">
+                    GitHub →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+
+<!-- About -->
+<section id="about">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">About</div>
+            <h2 class="section-title">关于我</h2>
+            <p class="section-description">
+                技术背景、教育经历以及我正在关注的方向。
+            </p>
+        </div>
+
+        <div class="about-grid">
+
+            <div class="about-text">
+
+                <p>
+                    我本科就读于电子信息相关专业，目前正在
+                    University of Padua 攻读 ICT 相关硕士。
+                </p>
+
+                <p>
+                    我的技术兴趣主要集中在 Web Development、
+                    Artificial Intelligence、Multimedia 和 Internet Technology。
+                </p>
+
+                <p>
+                    我喜欢通过实际项目学习技术，而不仅仅停留在理论层面。
+                    这个网站也是我记录项目、实验和学习成果的地方。
+                </p>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-item">
+                    <div class="info-label">EDUCATION</div>
+                    <div class="info-value">
+                        University of Padua · ICT
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">LOCATION</div>
+                    <div class="info-value">
+                        Padua, Italy
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">INTERESTS</div>
+                    <div class="info-value">
+                        AI · Software · Product
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">LANGUAGES</div>
+                    <div class="info-value">
+                        Chinese · English
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Projects -->
+<section id="projects">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Selected Works</div>
+            <h2 class="section-title">我的作品</h2>
+            <p class="section-description">
+                一些我参与开发、学习或正在进行中的项目。
+            </p>
+        </div>
+
+        <div class="projects">
+
+            <!-- Project 01 -->
+            <article class="project-card">
+
+                <div class="project-number">
+                    PROJECT 01
+                </div>
+
+                <h3>Database Management System</h3>
+
+                <p>
+                    从零设计并实现一个数据库管理系统 Demo，
+                    用于理解数据库系统的核心结构、SQL 执行以及数据管理机制。
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech">Java</span>
+                    <span class="tech">SQL</span>
+                    <span class="tech">Database</span>
+                    <span class="tech">Spring</span>
+                </div>
+
+                <a class="project-link"
+                   href="https://github.com/YOUR_USERNAME/PROJECT_1"
+                   target="_blank">
+                    View Project →
+                </a>
+
+            </article>
+
+
+            <!-- Project 02 -->
+            <article class="project-card">
+
+                <div class="project-number">
+                    PROJECT 02
+                </div>
+
+                <h3>AI / Machine Learning Project</h3>
+
+                <p>
+                    一个机器学习实验项目，用于研究监督学习、
+                    神经网络、模型训练以及数据处理流程。
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech">Python</span>
+                    <span class="tech">PyTorch</span>
+                    <span class="tech">Machine Learning</span>
+                    <span class="tech">AI</span>
+                </div>
+
+                <a class="project-link"
+                   href="https://github.com/YOUR_USERNAME/PROJECT_2"
+                   target="_blank">
+                    View Project →
+                </a>
+
+            </article>
+
+
+            <!-- Project 03 -->
+            <article class="project-card">
+
+                <div class="project-number">
+                    PROJECT 03
+                </div>
+
+                <h3>Web Application</h3>
+
+                <p>
+                    一个完整的 Web Application，
+                    包括前端界面、后端 API、数据库以及用户交互。
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech">Java</span>
+                    <span class="tech">Spring Boot</span>
+                    <span class="tech">MySQL</span>
+                    <span class="tech">REST API</span>
+                </div>
+
+                <a class="project-link"
+                   href="https://github.com/YOUR_USERNAME/PROJECT_3"
+                   target="_blank">
+                    View Project →
+                </a>
+
+            </article>
+
+
+            <!-- Project 04 -->
+            <article class="project-card">
+
+                <div class="project-number">
+                    PROJECT 04
+                </div>
+
+                <h3>Multimedia Project</h3>
+
+                <p>
+                    与图像、视频、计算机视觉或多媒体数据处理相关的项目。
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech">Python</span>
+                    <span class="tech">OpenCV</span>
+                    <span class="tech">Computer Vision</span>
+                    <span class="tech">Multimedia</span>
+                </div>
+
+                <a class="project-link"
+                   href="https://github.com/YOUR_USERNAME/PROJECT_4"
+                   target="_blank">
+                    View Project →
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Skills -->
+<section id="skills">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Skills</div>
+            <h2 class="section-title">技术栈</h2>
+        </div>
+
+        <div class="skills">
+
+            <span class="skill">Java</span>
+            <span class="skill">Python</span>
+            <span class="skill">Spring Boot</span>
+            <span class="skill">REST API</span>
+            <span class="skill">MySQL</span>
+            <span class="skill">Git</span>
+            <span class="skill">GitHub</span>
+            <span class="skill">HTML / CSS</span>
+            <span class="skill">JavaScript</span>
+            <span class="skill">Machine Learning</span>
+            <span class="skill">Computer Vision</span>
+            <span class="skill">Multimedia</span>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Experience -->
+<section id="experience">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Background</div>
+            <h2 class="section-title">经历</h2>
+        </div>
+
+        <div class="timeline">
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    2026 — Present
+                </div>
+
+                <h3>
+                    University of Padua
+                </h3>
+
+                <p>
+                    Master's Degree · ICT / Internet & Multimedia
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    2021 — 2025
+                </div>
+
+                <h3>
+                    Software / Web Development
+                </h3>
+
+                <p>
+                    Java Web、后端开发、数据库以及互联网相关项目经验。
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    2015 — 2019
+                </div>
+
+                <h3>
+                    Shandong University
+                </h3>
+
+                <p>
+                    Electronic Information Science and Technology
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Contact -->
+<section id="contact">
+    <div class="container">
+
+        <div class="contact-box">
+
+            <h2>Let's connect.</h2>
+
+            <p>
+                如果你对我的项目、技术方向或者合作感兴趣，欢迎联系我。
+            </p>
+
+            <div class="contact-links">
+
+                <a class="contact-link"
+                   href="https://github.com/YOUR_USERNAME"
+                   target="_blank">
+                    GitHub
+                </a>
+
+                <a class="contact-link"
+                   href="mailto:YOUR_EMAIL@example.com">
+                    Email
+                </a>
+
+                <a class="contact-link"
+                   href="https://www.linkedin.com/in/YOUR_USERNAME/"
+                   target="_blank">
+                    LinkedIn
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<footer>
+    © 2026 YOUR_NAME. Built with HTML & CSS.
+</footer>
+
+
+<script>
+    // 简单的滚动淡入效果
+    const items = document.querySelectorAll(
+        ".project-card, .timeline-item, .about-grid"
+    );
+
+    const observer = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
+
+    items.forEach(item => {
+        item.style.opacity = "0";
+        item.style.transform = "translateY(20px)";
+        item.style.transition = "opacity .6s ease, transform .6s ease";
+        observer.observe(item);
+    });
+</script>
+
+</body>
+</html>
+```
