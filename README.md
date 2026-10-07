@@ -1,6 +1,6 @@
 # terima-tang.github.io
 special page for study recording
-# 👋 Hi, I'm YOUR_NAME
+# 👋 Hi, I'm 唐筠
 
 ### ICT Master's Student · Software Developer · AI & Multimedia Enthusiast
 
